@@ -1,4 +1,5 @@
-﻿package com.kxw.demo.pojo;
+
+package com.kxw.demo.pojo;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;

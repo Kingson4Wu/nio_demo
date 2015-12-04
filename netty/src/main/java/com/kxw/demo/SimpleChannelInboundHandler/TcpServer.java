@@ -41,6 +41,7 @@ public class TcpServer {
 
     protected static void run() throws Exception {
         ServerBootstrap b = new ServerBootstrap();
+        //其实这里的child就是client端的，而parent就是作为acceptor。
         b.group(bossGroup, workerGroup);
         b.channel(NioServerSocketChannel.class);
         b.childHandler(new ChannelInitializer<SocketChannel>() {

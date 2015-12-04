@@ -20,11 +20,16 @@
         <repository>
             <id>central</id>
             <name>Central Repository</name>
-            <url>http://mvnrepository.com/</url>
+            <url>http://maven.oschina.net/content/groups/public/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>oschina</id>
+            <name>oschina Repository</name>
+            <url>http://central.maven.org/maven2/</url>
         </repository>
     </repositories>
 
