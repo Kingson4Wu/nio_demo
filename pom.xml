@@ -13,6 +13,7 @@
     <modules>
         <module>netty</module>
         <module>mina</module>
+        <module>grizzly</module>
         <module>nio</module>
     </modules>
 
