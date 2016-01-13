@@ -1,6 +1,22 @@
 <http://www.iteye.com/magazines/132-Java-NIO>
 <http://tutorials.jenkov.com/java-nio/index.html>
 
+
+目 录 [ - ]
+Java NIO 概述
+Java NIO vs. IO
+通道（Channel）
+缓冲区（Buffer）
+分散（Scatter）/聚集（Gather）
+通道之间的数据传输
+选择器（Selector）
+文件通道
+Socket 通道
+ServerSocket 通道
+Datagram 通道
+管道（Pipe）
+
+
 Java NIO提供了与标准IO不同的IO工作方式：
 
 Channels and Buffers（通道和缓冲区）：标准的IO基于字节流和字符流进行操作的，而NIO是基于通道（Channel）和缓冲区（Buffer）进行操作，
@@ -57,4 +73,11 @@ Selector允许单线程处理多个 Channel。如果你的应用打开了多个�
 
 ---------
 
-find my eclipse workspace code paste here !!!!
+分散（Scatter）/聚集（Gather）
+Java NIO开始支持scatter/gather，scatter/gather用于描述从Channel（译者注：Channel在中文经常翻译为通道）中读取或者写入到Channel的操作。 
+
+分散（scatter）从Channel中读取是指在读操作时将读取的数据写入多个buffer中。因此，Channel将从Channel中读取的数据“分散（scatter）”到多个Buffer中。 
+
+聚集（gather）写入Channel是指在写操作时将多个buffer的数据写入同一个Channel，因此，Channel 将多个Buffer中的数据“聚集（gather）”后发送到Channel。 
+
+scatter / gather经常用于需要将传输的数据分开处理的场合，例如传输一个由消息头和消息体组成的消息，你可能会将消息体和消息头分散到不同的buffer中，这样你可以方便的处理消息头和消息体。 
