@@ -15,6 +15,7 @@
         <module>mina</module>
         <module>grizzly</module>
         <module>nio</module>
+        <module>netty-definitive-guide</module>
     </modules>
 
     <repositories>

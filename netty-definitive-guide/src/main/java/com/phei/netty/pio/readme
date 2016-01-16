@@ -1,0 +1,24 @@
+伪异步I/O
+利用线程池和消息队列避免每次请求都创建一个线程
+但底层仍是BIO
+当队列积满时,后续队列操作将被阻塞
+前端只有一个accept线程接收客户端接入,它被阻塞在线程池的同步阻塞队列之后,新的客户端请求消息将被拒绝,客户端会发生大量的连接超时.
+
+
+BIO API
+输入流InputStream
+public int read(byte b[]) throws IOException
+
+This method blocks until input data is available ,end of file is detected ,or an exception is thrown.
+1. 有数据可读
+2. 可用数据已经读取完毕
+3. 发生空指针或IO异常
+
+这意味着当对方发送请求或者应答消息比较缓慢,或者网络传输较慢时,读取输入流的一方也会被长时间阻塞.阻塞期间,其他介入消息只能在队列中排队.
+
+输出流OutputStream
+public void write(byte b[]) throws IOException
+write 方法输出流时也会被阻塞,直到所有要发送的字节全部写入完毕,或者发生异常
+TCP/IP 中,当消息接受方处理缓慢时,将会导致发送方TCP windows size不断减少,直至为0,双方处于Keep-Alive状态,write操作无限期阻塞.
+
+读和写都是同步阻塞的,阻塞时间取决于对方I/O线程的处理速度和网络I/O的传输速度.

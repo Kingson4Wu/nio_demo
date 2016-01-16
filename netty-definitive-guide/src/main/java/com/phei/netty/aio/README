@@ -1,0 +1,12 @@
+参考nio module中的
+AsyncEchoServer和AsynchronousChannelAPITest
+
+file中的AsynchronousFileChannel.read()对应
+socket中的AsynchronousServerSocketChannel.accept()
+
+其中参数attachment对应接口CompletionHandler<V,A> 中的第二个参数类型
+V是read或accept的返回类型
+AsynchronousServerSocketChannel.accept()返回AsynchronousSocketChannel
+AsynchronousSocketChannel.read()返回Integer
+AsynchronousFileChannel.read()返回Integer
+
