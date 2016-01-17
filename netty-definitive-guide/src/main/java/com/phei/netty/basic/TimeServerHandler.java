@@ -38,12 +38,16 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
 	String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new java.util.Date(
 		System.currentTimeMillis()).toString() : "BAD ORDER";
 	ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
-	ctx.write(resp);
+	ctx.write(resp);//异步发送应答消息给客户端
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 	ctx.flush();
+		//作用是将消息发送队列中的消息写入到SocketChannel中发送给对方.从性能角度考虑,为了防止频繁的唤醒Selector进行消息发送,
+		//Netty的write方法并不是直接将消息写入SocketChannel中,调用write方法只是把待发送的消息放到发送缓冲数组中,再通过调用flush方法,
+		//将发送缓冲区中的消息全部写到SocketChannel中.
+
     }
 
     @Override

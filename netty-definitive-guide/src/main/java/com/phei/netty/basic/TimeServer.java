@@ -32,17 +32,21 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class TimeServer {
 
     public void bind(int port) throws Exception {
-	// 配置服务端的NIO线程组
+	// 配置服务端的NIO线程组,专门用于网络事件的处理,实际上它们就是Reactor线程组.
+		// 这里创建两个的原因是一个用于服务端接受客户端的连接,另一个用于进行SocketChannel的网络读写
 	EventLoopGroup bossGroup = new NioEventLoopGroup();
 	EventLoopGroup workerGroup = new NioEventLoopGroup();
 	try {
+		//ServerBootstrap是Netty用于启动NIO服务端的辅助启动类,目的是降低服务端的开发复杂度
 	    ServerBootstrap b = new ServerBootstrap();
 	    b.group(bossGroup, workerGroup)
-		    .channel(NioServerSocketChannel.class)
+		    .channel(NioServerSocketChannel.class)//NioServerSocketChannel功能对应JDK NIO类库中的ServerSocketChannel
 		    .option(ChannelOption.SO_BACKLOG, 1024)
 		    .childHandler(new ChildChannelHandler());
+		//I/O事件处理类ChildChannelHandler,它的作用类似于Reactor模式中的Handler类,主要用于处理网络I/O事件(例如记录日志,对消息进行解编码等)
 	    // 绑定端口，同步等待成功
 	    ChannelFuture f = b.bind(port).sync();
+		//绑定监听端口,调用同步阻塞方法sync等待绑定操作完成.返回ChannelFuture主要用于异步操作的通知回调
 
 	    // 等待服务端监听端口关闭
 	    f.channel().closeFuture().sync();

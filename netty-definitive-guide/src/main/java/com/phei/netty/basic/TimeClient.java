@@ -42,6 +42,7 @@ public class TimeClient {
 			@Override
 			public void initChannel(SocketChannel ch)
 				throws Exception {
+				//initChannel的作用是当创建NioSocketChannel成功之后,在初始化它的时候将它的ChannelHandler设置到CHannelPipeline中,用于处理网络I/O事件
 			    ch.pipeline().addLast(new TimeClientHandler());
 			}
 		    });
