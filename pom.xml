@@ -11,6 +11,7 @@
 
 
     <modules>
+        <module>java-io</module>
         <module>netty</module>
         <module>mina</module>
         <module>grizzly</module>
