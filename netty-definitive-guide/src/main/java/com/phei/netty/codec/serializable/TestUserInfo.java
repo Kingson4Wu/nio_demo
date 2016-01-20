@@ -48,3 +48,9 @@ public class TestUserInfo {
     }
 
 }
+
+/**
+ * The jdk serializable length is : 127
+ -------------------------------------
+ The byte array serializable length is : 24
+ */

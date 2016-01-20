@@ -49,6 +49,9 @@ public class SubReqClient {
 				    new ObjectDecoder(1024, ClassResolvers
 					    .cacheDisabled(this.getClass()
 						    .getClassLoader())));
+				//禁止对类加载起进行缓存,它在基于OSGi的动态模块化编程中经常使用
+				//由于OSGi的bundle可以进行热部署和热升级,当某个bundle升级后,它对应的类加载器也将一起升级
+				//因此在动态模块化编程过程中,很少对类加载器进行缓存,因为它随时可能变化
 			    ch.pipeline().addLast(new ObjectEncoder());
 			    ch.pipeline().addLast(new SubReqClientHandler());
 			}

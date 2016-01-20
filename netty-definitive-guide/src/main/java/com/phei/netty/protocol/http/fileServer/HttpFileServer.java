@@ -34,6 +34,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
  */
 public class HttpFileServer {
 
+	//http://localhost:8080/src/com/phei/netty/
     private static final String DEFAULT_URL = "/src/com/phei/netty/";
 
     public void run(final int port, final String url) throws Exception {
@@ -48,18 +49,23 @@ public class HttpFileServer {
 			protected void initChannel(SocketChannel ch)
 				throws Exception {
 			    ch.pipeline().addLast("http-decoder",
-				    new HttpRequestDecoder());
+				    new HttpRequestDecoder());//Http请求消息解码器
 			    ch.pipeline().addLast("http-aggregator",
 				    new HttpObjectAggregator(65536));
+				//HttpObjectAggregator解码器,将多个消息转换为单一的FullHttpRequest或者FullHttpResponse,原因时HTTP解码器在每个http消息中会生成多个消息对象
+				//(1)HttpRequest/HttpResponse (2)HttpContent (3)LastHttpContent
 			    ch.pipeline().addLast("http-encoder",
 				    new HttpResponseEncoder());
+				//HTTP响应解码器,对HTTP响应消息进行编码
 			    ch.pipeline().addLast("http-chunked",
 				    new ChunkedWriteHandler());
+				//支持异步发送大的码流(例如大文件传输),但不占用过多的内存,防止发生Java内存溢出错误
 			    ch.pipeline().addLast("fileServerHandler",
 				    new HttpFileServerHandler(url));
+				//文件服务器业务逻辑处理
 			}
 		    });
-	    ChannelFuture future = b.bind("192.168.1.102", port).sync();
+	    ChannelFuture future = b.bind("127.0.0.1", port).sync();
 	    System.out.println("HTTP文件目录服务器启动，网址是 : " + "http://192.168.1.102:"
 		    + port + url);
 	    future.channel().closeFuture().sync();

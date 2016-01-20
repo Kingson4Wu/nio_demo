@@ -65,3 +65,8 @@ public class PerformTestUserInfo {
     }
 
 }
+/**
+ The jdk serializable cost time is  : 3190 ms
+ -------------------------------------
+ The byte array serializable cost time is : 123 ms
+ */

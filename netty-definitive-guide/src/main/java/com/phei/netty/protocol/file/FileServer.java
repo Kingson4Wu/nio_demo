@@ -55,8 +55,8 @@ public class FileServer {
 				throws Exception {
 			    ch.pipeline().addLast(
 				    new StringEncoder(CharsetUtil.UTF_8),
-				    new LineBasedFrameDecoder(1024),
-				    new StringDecoder(CharsetUtil.UTF_8),
+				    new LineBasedFrameDecoder(1024),//按照回车换行符对数据报进行解码
+				    new StringDecoder(CharsetUtil.UTF_8),//将数据报解码成为字符串,LineBasedFrameDecoder + StringDecoder =>> 文本换行解码器
 				    new FileServerHandler());
 			}
 		    });

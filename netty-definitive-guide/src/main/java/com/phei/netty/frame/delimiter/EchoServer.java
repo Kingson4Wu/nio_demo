@@ -55,6 +55,9 @@ public class EchoServer {
 			    ch.pipeline().addLast(
 				    new DelimiterBasedFrameDecoder(1024,
 					    delimiter));
+				//1024表示单条消息的最大长度,当达到该长度后仍然没有查找到分隔符,就抛出TooLongFrameException,
+				//防止由于异常 码流缺失分隔符 导致的内存溢出,这是Netty的可靠性保护.
+				//delimiter : 分隔符缓冲对象
 			    ch.pipeline().addLast(new StringDecoder());
 			    ch.pipeline().addLast(new EchoServerHandler());
 			}
