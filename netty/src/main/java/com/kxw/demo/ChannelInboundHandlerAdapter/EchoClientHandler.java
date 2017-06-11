@@ -13,6 +13,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     /**
      * 此方法会在连接到server后被调用
      */
+    @Override
     public void channelActive(ChannelHandlerContext ctx) {
         ctx.write(Unpooled.copiedBuffer("Netty rocks!", CharsetUtil.UTF_8));
     }
@@ -20,6 +21,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     /**
      * 此方法会在接收到server数据后调用
      */
+    @Override
     public void channelRead0(ChannelHandlerContext ctx, ByteBuf in) {
         System.out.println("Client received: " + ByteBufUtil.hexDump(in.readBytes(in.readableBytes())));
     }
@@ -27,6 +29,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     /**
      * 捕捉到异常
      */
+    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();

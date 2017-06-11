@@ -36,6 +36,7 @@ public class EchoClient {
             b.remoteAddress(new InetSocketAddress(host, port));
             b.handler(new ChannelInitializer<SocketChannel>() {
 
+                @Override
                 public void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new EchoClientHandler());
                 }
@@ -43,6 +44,7 @@ public class EchoClient {
             ChannelFuture f = b.connect().sync();
             f.addListener(new ChannelFutureListener() {
 
+                @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
                         System.out.println("client connected");

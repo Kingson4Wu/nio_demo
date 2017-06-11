@@ -65,8 +65,9 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
 		System.out.println("Login is ok : " + message);
 		ctx.fireChannelRead(msg);
 	    }
-	} else
-	    ctx.fireChannelRead(msg);
+	} else {
+		ctx.fireChannelRead(msg);
+	}
     }
 
     private NettyMessage buildLoginReq() {
@@ -77,7 +78,8 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
 	return message;
     }
 
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+    @Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 	    throws Exception {
 	ctx.fireExceptionCaught(cause);
     }

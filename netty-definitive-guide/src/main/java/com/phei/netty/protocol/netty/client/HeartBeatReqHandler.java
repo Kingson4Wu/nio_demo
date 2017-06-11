@@ -51,8 +51,9 @@ public class HeartBeatReqHandler extends ChannelHandlerAdapter {
 	    System.out
 		    .println("Client receive server heart beat message : ---> "
 			    + message);
-	} else
-	    ctx.fireChannelRead(msg);
+	} else {
+		ctx.fireChannelRead(msg);
+	}
     }
 
     private class HeartBeatTask implements Runnable {

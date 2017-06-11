@@ -21,7 +21,7 @@ import java.nio.channels.FileChannel;
  * 这个技术功能强大但是也很危险，不过如果正确使用的话，它会使得你的IO速度提高数倍。
  * 众所周知，华尔街的交易操作为了能够赢得秒级甚至是毫秒级的优势，都使用了内存映射技术。
  */
-public class mem_map_example {
+public class MemMapExample {
     private static int mem_map_size = 20 * 1024 * 1024;
     private static String fn = "example_memory_mapped_file.txt";
 

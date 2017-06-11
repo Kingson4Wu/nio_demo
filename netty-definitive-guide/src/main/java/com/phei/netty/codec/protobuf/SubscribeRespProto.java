@@ -64,6 +64,7 @@ public final class SubscribeRespProto {
       return defaultInstance;
     }
 
+    @Override
     public SubscribeResp getDefaultInstanceForType() {
       return defaultInstance;
     }
@@ -129,6 +130,7 @@ public final class SubscribeRespProto {
       return SubscribeRespProto.internal_static_netty_SubscribeResp_descriptor;
     }
 
+    @Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return SubscribeRespProto.internal_static_netty_SubscribeResp_fieldAccessorTable
@@ -138,6 +140,7 @@ public final class SubscribeRespProto {
 
     public static com.google.protobuf.Parser<SubscribeResp> PARSER =
         new com.google.protobuf.AbstractParser<SubscribeResp>() {
+      @Override
       public SubscribeResp parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -158,12 +161,14 @@ public final class SubscribeRespProto {
     /**
      * <code>required int32 subReqID = 1;</code>
      */
+    @Override
     public boolean hasSubReqID() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>required int32 subReqID = 1;</code>
      */
+    @Override
     public int getSubReqID() {
       return subReqID_;
     }
@@ -174,12 +179,14 @@ public final class SubscribeRespProto {
     /**
      * <code>required int32 respCode = 2;</code>
      */
+    @Override
     public boolean hasRespCode() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>required int32 respCode = 2;</code>
      */
+    @Override
     public int getRespCode() {
       return respCode_;
     }
@@ -190,12 +197,14 @@ public final class SubscribeRespProto {
     /**
      * <code>required string desc = 3;</code>
      */
+    @Override
     public boolean hasDesc() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
      * <code>required string desc = 3;</code>
      */
+    @Override
     public String getDesc() {
       Object ref = desc_;
       if (ref instanceof String) {
@@ -213,6 +222,7 @@ public final class SubscribeRespProto {
     /**
      * <code>required string desc = 3;</code>
      */
+    @Override
     public com.google.protobuf.ByteString
         getDescBytes() {
       Object ref = desc_;
@@ -233,9 +243,12 @@ public final class SubscribeRespProto {
       desc_ = "";
     }
     private byte memoizedIsInitialized = -1;
+    @Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized != -1) {
+        return isInitialized == 1;
+      }
 
       if (!hasSubReqID()) {
         memoizedIsInitialized = 0;
@@ -253,6 +266,7 @@ public final class SubscribeRespProto {
       return true;
     }
 
+    @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
@@ -269,9 +283,12 @@ public final class SubscribeRespProto {
     }
 
     private int memoizedSerializedSize = -1;
+    @Override
     public int getSerializedSize() {
       int size = memoizedSerializedSize;
-      if (size != -1) return size;
+      if (size != -1) {
+        return size;
+      }
 
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -352,10 +369,12 @@ public final class SubscribeRespProto {
     }
 
     public static Builder newBuilder() { return Builder.create(); }
+    @Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder(SubscribeResp prototype) {
       return newBuilder().mergeFrom(prototype);
     }
+    @Override
     public Builder toBuilder() { return newBuilder(this); }
 
     @Override
@@ -375,6 +394,7 @@ public final class SubscribeRespProto {
         return SubscribeRespProto.internal_static_netty_SubscribeResp_descriptor;
       }
 
+      @Override
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return SubscribeRespProto.internal_static_netty_SubscribeResp_fieldAccessorTable
@@ -400,6 +420,7 @@ public final class SubscribeRespProto {
         return new Builder();
       }
 
+      @Override
       public Builder clear() {
         super.clear();
         subReqID_ = 0;
@@ -411,19 +432,23 @@ public final class SubscribeRespProto {
         return this;
       }
 
+      @Override
       public Builder clone() {
         return create().mergeFrom(buildPartial());
       }
 
+      @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return SubscribeRespProto.internal_static_netty_SubscribeResp_descriptor;
       }
 
+      @Override
       public SubscribeResp getDefaultInstanceForType() {
         return SubscribeResp.getDefaultInstance();
       }
 
+      @Override
       public SubscribeResp build() {
         SubscribeResp result = buildPartial();
         if (!result.isInitialized()) {
@@ -432,6 +457,7 @@ public final class SubscribeRespProto {
         return result;
       }
 
+      @Override
       public SubscribeResp buildPartial() {
         SubscribeResp result = new SubscribeResp(this);
         int from_bitField0_ = bitField0_;
@@ -453,6 +479,7 @@ public final class SubscribeRespProto {
         return result;
       }
 
+      @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof SubscribeResp) {
           return mergeFrom((SubscribeResp)other);
@@ -463,7 +490,9 @@ public final class SubscribeRespProto {
       }
 
       public Builder mergeFrom(SubscribeResp other) {
-        if (other == SubscribeResp.getDefaultInstance()) return this;
+        if (other == SubscribeResp.getDefaultInstance()) {
+          return this;
+        }
         if (other.hasSubReqID()) {
           setSubReqID(other.getSubReqID());
         }
@@ -479,6 +508,7 @@ public final class SubscribeRespProto {
         return this;
       }
 
+      @Override
       public final boolean isInitialized() {
         if (!hasSubReqID()) {
           
@@ -495,6 +525,7 @@ public final class SubscribeRespProto {
         return true;
       }
 
+      @Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -519,12 +550,14 @@ public final class SubscribeRespProto {
       /**
        * <code>required int32 subReqID = 1;</code>
        */
+      @Override
       public boolean hasSubReqID() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>required int32 subReqID = 1;</code>
        */
+      @Override
       public int getSubReqID() {
         return subReqID_;
       }
@@ -552,12 +585,14 @@ public final class SubscribeRespProto {
       /**
        * <code>required int32 respCode = 2;</code>
        */
+      @Override
       public boolean hasRespCode() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>required int32 respCode = 2;</code>
        */
+      @Override
       public int getRespCode() {
         return respCode_;
       }
@@ -585,12 +620,14 @@ public final class SubscribeRespProto {
       /**
        * <code>required string desc = 3;</code>
        */
+      @Override
       public boolean hasDesc() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
        * <code>required string desc = 3;</code>
        */
+      @Override
       public String getDesc() {
         Object ref = desc_;
         if (!(ref instanceof String)) {
@@ -605,6 +642,7 @@ public final class SubscribeRespProto {
       /**
        * <code>required string desc = 3;</code>
        */
+      @Override
       public com.google.protobuf.ByteString
           getDescBytes() {
         Object ref = desc_;
@@ -686,6 +724,7 @@ public final class SubscribeRespProto {
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        @Override
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;

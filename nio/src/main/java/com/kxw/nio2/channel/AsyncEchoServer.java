@@ -33,12 +33,14 @@ public class AsyncEchoServer {
             System.out.println("an acceptor has created.");
         }
 
+        @Override
         public void completed(final AsynchronousSocketChannel channel, AsynchronousServerSocketChannel serverChannel) {
             System.out.println(String.format("write: name: %s", Thread.currentThread().getName()));
             channel.read(buffer, channel, new Reader(buffer));
             serverChannel.accept(serverChannel, new Acceptor());
         }
 
+        @Override
         public void failed(Throwable exception, AsynchronousServerSocketChannel serverChannel) {
             throw new RuntimeException(exception);
         }
@@ -52,6 +54,7 @@ public class AsyncEchoServer {
             this.buffer = buffer;
         }
 
+        @Override
         public void completed(Integer result, AsynchronousSocketChannel channel) {
             System.out.println(String.format("read: name: %s", Thread.currentThread().getName()));
             if (result != null && result < 0) {
@@ -65,6 +68,7 @@ public class AsyncEchoServer {
             channel.write(buffer, channel, new Writer(buffer));
         }
 
+        @Override
         public void failed(Throwable exception, AsynchronousSocketChannel channel) {
             throw new RuntimeException(exception);
         }
@@ -78,12 +82,14 @@ public class AsyncEchoServer {
             this.buffer = buffer;
         }
 
+        @Override
         public void completed(Integer result, AsynchronousSocketChannel channel) {
             System.out.println(String.format("write: name: %s", Thread.currentThread().getName()));
             buffer.clear();
             channel.read(buffer, channel, new Reader(buffer));
         }
 
+        @Override
         public void failed(Throwable exception, AsynchronousSocketChannel channel) {
             throw new RuntimeException(exception);
         }

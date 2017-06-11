@@ -41,7 +41,8 @@ public class HttpXmlResponseEncoder extends
      * io.netty.handler.codec.MessageToMessageEncoder#encode(io.netty.channel
      * .ChannelHandlerContext, java.lang.Object, java.util.List)
      */
-    protected void encode(ChannelHandlerContext ctx, HttpXmlResponse msg,
+    @Override
+	protected void encode(ChannelHandlerContext ctx, HttpXmlResponse msg,
 	    List<Object> out) throws Exception {
 	ByteBuf body = encode0(ctx, msg.getResult());
 	FullHttpResponse response = msg.getHttpResponse();

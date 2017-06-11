@@ -56,8 +56,9 @@ public abstract class AbstractHttpXmlDecoder<T> extends
 	    throws Exception {
 	factory = BindingDirectory.getFactory(clazz);
 	String content = body.toString(UTF_8);
-	if (isPrint)
-	    System.out.println("The body is : " + content);
+	if (isPrint) {
+		System.out.println("The body is : " + content);
+	}
 	reader = new StringReader(content);
 	IUnmarshallingContext uctx = factory.createUnmarshallingContext();
 	Object result = uctx.unmarshalDocument(reader);

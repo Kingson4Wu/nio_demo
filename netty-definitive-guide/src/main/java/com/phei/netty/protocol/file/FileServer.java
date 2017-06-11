@@ -51,6 +51,7 @@ public class FileServer {
 			 * io.netty.channel.ChannelInitializer#initChannel(io
 			 * .netty.channel.Channel)
 			 */
+			@Override
 			public void initChannel(SocketChannel ch)
 				throws Exception {
 			    ch.pipeline().addLast(

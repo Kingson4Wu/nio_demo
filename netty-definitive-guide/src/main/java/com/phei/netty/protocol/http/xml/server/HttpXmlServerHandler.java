@@ -59,6 +59,7 @@ public class HttpXmlServerHandler extends
 		order));
 	if (!isKeepAlive(request)) {
 	    future.addListener(new GenericFutureListener<Future<? super Void>>() {
+		@Override
 		public void operationComplete(Future future) throws Exception {
 		    ctx.close();
 		}

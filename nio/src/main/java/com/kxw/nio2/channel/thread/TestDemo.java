@@ -8,6 +8,7 @@ class BThread extends Thread {
         super("[BThread] Thread");
     }
 
+    @Override
     public void run() {
         String threadName = Thread.currentThread().getName();
         System.out.println(threadName + " start.");
@@ -31,6 +32,7 @@ class AThread extends Thread {
         this.bt = bt;
     }
 
+    @Override
     public void run() {
         String threadName = Thread.currentThread().getName();
         System.out.println(threadName + " start.");

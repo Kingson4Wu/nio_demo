@@ -14,6 +14,7 @@ public class KingHandler extends SimpleChannelHandler {
         ctx.sendUpstream(e);
     }
 
+    @Override
     public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e)
             throws Exception {
         System.out.println(6);

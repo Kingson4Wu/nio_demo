@@ -41,12 +41,13 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (IdleStateEvent.class.isAssignableFrom(evt.getClass())) {
             IdleStateEvent event = (IdleStateEvent) evt;
-            if (event.state() == IdleState.READER_IDLE)
+            if (event.state() == IdleState.READER_IDLE) {
                 System.out.println("read idle");
-            else if (event.state() == IdleState.WRITER_IDLE)
+            } else if (event.state() == IdleState.WRITER_IDLE) {
                 System.out.println("write idle");
-            else if (event.state() == IdleState.ALL_IDLE)
+            } else if (event.state() == IdleState.ALL_IDLE) {
                 System.out.println("all idle");
+            }
         }
     }
 }

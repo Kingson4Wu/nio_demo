@@ -34,7 +34,9 @@ public class ChatRoomClient {
         Scanner scan = new Scanner(System.in);
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
-            if ("".equals(line)) continue; //不允许发空消息
+            if ("".equals(line)) {
+                continue; //不允许发空消息
+            }
             if ("".equals(name)) {
                 name = line;
                 line = name + USER_CONTENT_SPILIT;
@@ -47,11 +49,14 @@ public class ChatRoomClient {
     }
 
     private class ClientThread implements Runnable {
+        @Override
         public void run() {
             try {
                 while (true) {
                     int readyChannels = selector.select();
-                    if (readyChannels == 0) continue;
+                    if (readyChannels == 0) {
+                        continue;
+                    }
                     Set selectedKeys = selector.selectedKeys();  //可以通过这个方法，知道可用通道的集合
                     Iterator keyIterator = selectedKeys.iterator();
                     while (keyIterator.hasNext()) {

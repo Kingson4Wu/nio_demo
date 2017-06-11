@@ -71,8 +71,9 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
 		}
 		loginResp = isOK ? buildResponse((byte) 0)
 			: buildResponse((byte) -1);
-		if (isOK)
-		    nodeCheck.put(nodeIndex, true);
+		if (isOK) {
+			nodeCheck.put(nodeIndex, true);
+		}
 	    }
 	    System.out.println("The login response is : " + loginResp
 		    + " body [" + loginResp.getBody() + "]");
@@ -91,7 +92,8 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
 	return message;
     }
 
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+    @Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 	    throws Exception {
 	cause.printStackTrace();
 	nodeCheck.remove(ctx.channel().remoteAddress().toString());// 删除缓存

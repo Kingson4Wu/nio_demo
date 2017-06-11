@@ -32,6 +32,7 @@ public class EchoServer {
             b.channel(NioServerSocketChannel.class);// 设置nio类型的channel
             b.localAddress(new InetSocketAddress(port));// 设置监听端口
             b.childHandler(new ChannelInitializer<SocketChannel>() {//有连接到达时会创建一个channel
+                @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     // pipeline管理channel中的Handler，在channel队列中加入一个handler来处理业务
                     ch.pipeline().addLast("myHandler", new EchoServerHandler());

@@ -32,8 +32,9 @@ public class ReadCompletionHandler implements
     private AsynchronousSocketChannel channel;
 
     public ReadCompletionHandler(AsynchronousSocketChannel channel) {
-	if (this.channel == null)
-	    this.channel = channel;
+	if (this.channel == null) {
+		this.channel = channel;
+	}
     }
 
     @Override
@@ -63,8 +64,9 @@ public class ReadCompletionHandler implements
 			@Override
 			public void completed(Integer result, ByteBuffer buffer) {
 			    // 如果没有发送完成，继续发送
-			    if (buffer.hasRemaining())
-				channel.write(buffer, buffer, this);
+			    if (buffer.hasRemaining()) {
+					channel.write(buffer, buffer, this);
+				}
 			}
 
 			@Override

@@ -5,6 +5,7 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.SimpleChannelDownstreamHandler;
 
 public class DownstreamHandlerB extends SimpleChannelDownstreamHandler {
+    @Override
     public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e)
             throws Exception {
         System.out.println(4);

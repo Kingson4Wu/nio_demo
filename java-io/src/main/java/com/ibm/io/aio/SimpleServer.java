@@ -14,6 +14,7 @@ public class SimpleServer {
                 AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(port));
         //监听消息，收到后启动 Handle 处理模块
         listener.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>() {
+            @Override
             public void completed(AsynchronousSocketChannel ch, Void att) {
                 listener.accept(null, this);// 接受下一个连接
                 handle(ch);// 处理当前连接

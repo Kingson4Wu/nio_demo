@@ -41,8 +41,9 @@ public final class NettyMessageEncoder extends
     @Override
     protected void encode(ChannelHandlerContext ctx, NettyMessage msg,
 	    ByteBuf sendBuf) throws Exception {
-	if (msg == null || msg.getHeader() == null)
-	    throw new Exception("The encode message is null");
+	if (msg == null || msg.getHeader() == null) {
+		throw new Exception("The encode message is null");
+	}
 	sendBuf.writeInt((msg.getHeader().getCrcCode()));
 	sendBuf.writeInt((msg.getHeader().getLength()));
 	sendBuf.writeLong((msg.getHeader().getSessionID()));
@@ -66,8 +67,9 @@ public final class NettyMessageEncoder extends
 	value = null;
 	if (msg.getBody() != null) {
 	    marshallingEncoder.encode(msg.getBody(), sendBuf);
-	} else
-	    sendBuf.writeInt(0);
+	} else {
+		sendBuf.writeInt(0);
+	}
 	sendBuf.setInt(4, sendBuf.readableBytes() - 8);
     }
 }

@@ -83,8 +83,9 @@ public class TestCodeC {
 	value = null;
 	if (msg.getBody() != null) {
 	    marshallingEncoder.encode(msg.getBody(), sendBuf);
-	} else
-	    sendBuf.writeInt(0);
+	} else {
+		sendBuf.writeInt(0);
+	}
 	sendBuf.setInt(4, sendBuf.readableBytes());
 	return sendBuf;
     }

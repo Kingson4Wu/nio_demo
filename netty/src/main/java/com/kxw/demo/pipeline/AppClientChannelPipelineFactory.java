@@ -4,6 +4,7 @@ import org.jboss.netty.channel.*;
 
 public class AppClientChannelPipelineFactory implements ChannelPipelineFactory {
 
+    @Override
     public ChannelPipeline getPipeline() throws Exception {
 
         ChannelPipeline pipeline = Channels.pipeline();

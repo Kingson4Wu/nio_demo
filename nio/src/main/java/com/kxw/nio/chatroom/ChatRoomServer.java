@@ -50,7 +50,9 @@ public class ChatRoomServer {
 
         while (true) {
             int readyChannels = selector.select();
-            if (readyChannels == 0) continue;
+            if (readyChannels == 0) {
+                continue;
+            }
             Set selectedKeys = selector.selectedKeys();  //可以通过这个方法，知道可用通道的集合
             Iterator keyIterator = selectedKeys.iterator();
             while (keyIterator.hasNext()) {

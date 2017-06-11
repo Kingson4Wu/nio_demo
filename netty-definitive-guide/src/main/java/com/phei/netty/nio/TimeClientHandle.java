@@ -79,8 +79,9 @@ public class TimeClientHandle implements Runnable {
 		    } catch (Exception e) {
 			if (key != null) {
 			    key.cancel();
-			    if (key.channel() != null)
-				key.channel().close();
+			    if (key.channel() != null) {
+					key.channel().close();
+				}
 			}
 		    }
 		}
@@ -91,12 +92,13 @@ public class TimeClientHandle implements Runnable {
 	}
 
 	// 多路复用器关闭后，所有注册在上面的Channel和Pipe等资源都会被自动去注册并关闭，所以不需要重复释放资源
-	if (selector != null)
-	    try {
-		selector.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	if (selector != null) {
+		try {
+			selector.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
     }
 
@@ -109,8 +111,9 @@ public class TimeClientHandle implements Runnable {
 		if (sc.finishConnect()) {
 		    sc.register(selector, SelectionKey.OP_READ);
 		    doWrite(sc);
-		} else
-		    System.exit(1);// 连接失败，进程退出
+		} else {
+			System.exit(1);// 连接失败，进程退出
+		}
 	    }
 	    if (key.isReadable()) {
 		ByteBuffer readBuffer = ByteBuffer.allocate(1024);
@@ -126,8 +129,9 @@ public class TimeClientHandle implements Runnable {
 		    // 对端链路关闭
 		    key.cancel();
 		    sc.close();
-		} else
-		    ; // 读到0字节，忽略
+		} else {
+			; // 读到0字节，忽略
+		}
 	    }
 	}
 
@@ -139,8 +143,9 @@ public class TimeClientHandle implements Runnable {
 		//判断是否连接成功,若成功则直接注册读状态到selector,否则(异步连接,返回false,说明客户端已经发送sync包,服务端没有返回ack包,物理链路还没有建立)
 	    socketChannel.register(selector, SelectionKey.OP_READ);
 	    doWrite(socketChannel);
-	} else
-	    socketChannel.register(selector, SelectionKey.OP_CONNECT);//监听服务端ACK应答
+	} else {
+		socketChannel.register(selector, SelectionKey.OP_CONNECT);//监听服务端ACK应答
+	}
     }
 
 	/**
@@ -155,8 +160,9 @@ public class TimeClientHandle implements Runnable {
 	writeBuffer.put(req);
 	writeBuffer.flip();
 	sc.write(writeBuffer);
-	if (!writeBuffer.hasRemaining())
-	    System.out.println("Send order 2 server succeed.");
+	if (!writeBuffer.hasRemaining()) {
+		System.out.println("Send order 2 server succeed.");
+	}
     }
 
 }
