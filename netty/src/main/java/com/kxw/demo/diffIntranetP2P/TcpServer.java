@@ -1,4 +1,4 @@
-package com.kxw.demo.SimpleChannelInboundHandler;
+package com.kxw.demo.diffIntranetP2P;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -39,7 +39,7 @@ public class TcpServer {
     private static final EventLoopGroup bossGroup = new NioEventLoopGroup(BIZGROUPSIZE);
     private static final EventLoopGroup workerGroup = new NioEventLoopGroup(BIZTHREADSIZE);
 
-    public static void run() throws Exception {
+    protected static void run() throws Exception {
         ServerBootstrap b = new ServerBootstrap();
         //其实这里的child就是client端的，而parent就是作为acceptor。
         b.group(bossGroup, workerGroup);

@@ -21,6 +21,7 @@ public class ServerNettyImpl implements IServer {
 	private static final Logger logger = Logger.getLogger(ServerNettyImpl.class
 			.getName());
 	
+	@Override
 	public void start() {
 		DatagramChannelFactory udpChannelFactory = new NioDatagramChannelFactory(
 				Executors.newCachedThreadPool());
@@ -34,10 +35,12 @@ public class ServerNettyImpl implements IServer {
 		this.channel = bootstrap.bind(serverAddress);
 		logger.info("server start on " + serverAddress);
 	}
+	@Override
 	public void restart() {
 		this.stop();
 		this.start();
 	}
+	@Override
 	public void stop() {
 		if (this.channel != null) {
 			this.channel.close().addListener(ChannelFutureListener.CLOSE);

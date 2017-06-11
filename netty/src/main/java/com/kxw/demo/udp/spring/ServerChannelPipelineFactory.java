@@ -12,7 +12,8 @@ public class ServerChannelPipelineFactory implements ChannelPipelineFactory
 	@Autowired
 	@Qualifier("receiverHandler")
 	private ReceiverHandler handler;
-	public ChannelPipeline getPipeline() throws Exception 
+	@Override
+	public ChannelPipeline getPipeline() throws Exception
 	{
 		ChannelPipeline pipeline=Channels.pipeline();
 		pipeline.addLast("handler", this.handler);

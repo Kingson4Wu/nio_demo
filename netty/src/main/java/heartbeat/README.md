@@ -26,7 +26,7 @@ Netty系列之Netty百万级推送服务设计要点
 <http://www.infoq.com/cn/articles/netty-million-level-push-service-design-points>
 
 ---
-Netty 的超时类型 IdleState 主要分为：
++ Netty 的超时类型 IdleState 主要分为：
 
 ALL_IDLE : 一段时间内没有数据接收或者发送
 READER_IDLE ： 一段时间内没有数据接收
@@ -37,6 +37,8 @@ IdleStateEvent ： 超时的事件
 IdleStateHandler ： 超时状态处理
 ReadTimeoutHandler ： 读超时状态处理
 WriteTimeoutHandler ： 写超时状态处理
+
++ Netty 超时机制及心跳程序实现 : <https://mp.weixin.qq.com/s/srTZqWebbQo2eLmiuF_Tkg>
 
 ---
 
