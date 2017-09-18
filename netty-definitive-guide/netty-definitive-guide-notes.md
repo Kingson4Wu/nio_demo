@@ -63,6 +63,17 @@ epoll, kqueue是Reacor模式，IOCP是Proactor模式。
 2.  在操作初始化之后的控制机制，Java7 的异步 IO 操作有两种 form ：
 	+ Pending Result: 这个结果返回的是 concurrent 包中的 Future 对象。
 	+ Complete Result: 采用 CompleteHandler 的回调机制返回结果。
++ 在JDK1.7中，这部分内容被称作NIO.2，主要在java.nio.channels包下增加了下面四个异步通道:
+	- AsynchronousSocketChannel
+    - AsynchronousServerSocketChannel
+    - AsynchronousFileChannel
+    - AsynchronousDatagramChannel
++ 在Linux 2.6以后，java NIO的实现，是通过epoll来实现的，这点可以通过jdk的源代码发现。而AIO，在windows上是通过IOCP实现的，在linux上还是通过epoll来实现的。
+这里强调一点：AIO，这是I/O处理模式，而epoll等都是实现AIO的一种编程模型；换句话说，AIO是一种接口标准，各家操作系统可以实现也可以不实现。
+在不同操作系统上在高并发情况下最好都采用操作系统推荐的方式。Linux上还没有真正实现网络方式的AIO。
++ 在windows上，AIO的实现是通过IOCP来完成的:  WindowsAsynchronousSocketChannelImpl (implements Iocp.OverlappedChannel)
+在linux上，AIO的实现是通过epoll来完成的: UnixAsynchronousSocketChannelImpl:(implements Port.PollableChannel)
+  
 	
 我们看异步通道所有的异步通道有需要遵循一个规则，在不阻塞应用去执行其他任务的情况下初始化IO操作和IO结束后的通知机制。在java7中有三个异步通道：AsynchronousFileChannel、AsynchronousSocketChannel和AsynchronousServerSocketChannel。另外还有一个比较重要的概念是group，要有组的概念是为了把资源共享，每一个异步的channel都会属于一个group，同一个group里的对象就可以共享一个线程池。这个group由AsynchronousChannelGroup,实现。
 reference : <http://www.tuicool.com/articles/rYniQ3>
@@ -141,8 +152,8 @@ netty对应四种解码器解决对应问题，有了这些解码器，用户不
 ### 编解码技术
 + 基于Java提供的对象输入/输出流ObjectInputStream和ObjectOutputStream，可以直接把Java对象作为可存储的字节数组写入文件，也可以传输到网络上。对程序员来说，基于JDK默认的序列化机制可以避免操作底层的字节数组，从而提升开发效率。
 + Java序列化的目的：
-1. 网络传输
-2. 对象持久化
+    1. 网络传输
+    2. 对象持久化
 + 网络传输中，当进行远程跨进程服务调用时，需要把被传输的Java对象编码为字节数组或者ByteBuffer对象。而当远程服务读取到ByteBuffer对象或者字节数组时，需要将其解码为发送时的Java对象。（Java对象的编解码技术）
 + Java序列化仅仅是Java对象的编解码技术的一种，由于它的种种缺陷，衍生出了多种编解码技术和框架。
 + 在远程服务调用（RPC）时，很少直接使用Java序列化进行消息的编解码和传输。原因是（1）无法跨语言（2）序列化后的码流太大［TestUserInfo］（3）序列化性能太低
