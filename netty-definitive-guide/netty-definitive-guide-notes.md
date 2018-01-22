@@ -1,7 +1,7 @@
 ——内容基本来自Netty权威指南一书
 ## 概念
 + file descriptor,socketfd，描述符就是一个数字，它指向内核中的一个结构体（文件路径，数据区等一些属性）
-+ IO多路复用，Java NIO的核心类库多路复用器Selector就是基于epoll的多路复用技术实现。
++ !!! IO多路复用，Java NIO的核心类库多路复用器Selector就是基于epoll的多路复用技术实现。
 + IO复用的系统调用方式：select，pselect，poll，epoll（IO复用属于同步IO）
 + Java I/O 操作及优化建议:<http://www.ibm.com/developerworks/cn/java/j-lo-io-optimize/index.html>
 
@@ -139,6 +139,9 @@ nio非阻塞io jdk7实现了nio2框架 在window上通过iocp实现 在linux上�
 
 ### TCP粘包和拆包
 + LineBasedFrameDecoder + StringDecoder解决TCP粘包导致的读半包或多包问题。
+    - LineBasedFrameDecoder(\n或\r\n)
+    - StringDecoder (将接受的字节对象转化成字符串)
+
 ### 分隔符和定长解码器
 + TCP以流的方式进行数据传输，上层的应用协议为了对消息进行区分，一般采用以下4种方式：
 1. 消息长度固定
