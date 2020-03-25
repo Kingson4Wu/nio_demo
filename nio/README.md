@@ -86,3 +86,5 @@ scatter / gather经常用于需要将传输的数据分开处理的场合，例�
 
 NIO教程:<http://ifeve.com/socket-channel/>
 
++ Java 非阻塞 IO 和异步 IO:<https://mp.weixin.qq.com/s/lZGL6Tpb2Lpd3EvqnB-0ig>
+
