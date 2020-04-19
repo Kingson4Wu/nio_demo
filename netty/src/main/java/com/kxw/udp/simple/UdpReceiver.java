@@ -16,6 +16,13 @@ import io.netty.util.CharsetUtil;
 
 /**
  * 1.最简单的接收者和发送者
+ *
+ * lsof -i:2222
+ * COMMAND  PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+ * java    3649 kingsonwu   66u  IPv6 0xb826f29a2025ce65      0t0  UDP *:rockwell-csp2
+ *
+ * netstat -an|grep 2222
+ * udp46      0      0  *.2222                 *.*
  */
 public class UdpReceiver {
     private static int R_PORT = 2222; //Reciever的端口
