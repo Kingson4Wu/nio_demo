@@ -1,4 +1,4 @@
-package com.kxw.udp;
+package com.kxw.udp.fullDuplex;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -13,10 +13,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.CharsetUtil;
 
-public class UdpSender {
+public class UdpSender2 {
     private static int S_PORT = 1111; //Sender的端口
     private static int R_PORT = 2222; //Reciever的端口
 
@@ -32,17 +33,19 @@ public class UdpSender {
             .handler(new ChannelInitializer<NioDatagramChannel>() {
                 @Override
                 protected void initChannel(NioDatagramChannel nioDatagramChannel) throws Exception {
-                    nioDatagramChannel.pipeline().addLast(new MyUdpEncoder());   //3.4在pipeline中加入编码器
+                    //3.4在pipeline中加入编码器，和解码器（用来处理返回的消息）
+                    nioDatagramChannel.pipeline().addLast(new MyUdpEncoder()).addLast(new DecoderInSender());
                 }
             });
         try {
             //4.bind并返回一个channel
             Channel channel = bootstrap.bind(S_PORT).sync().channel();
+            //Channel channel = bootstrap.bind(0).sync().channel();
             for (int i = 0; i < 10; i++) {
                 TimeUnit.SECONDS.sleep(1);
                 //5.发送数据
-                channel.writeAndFlush("Send msg :" + i);
-                System.out.println("Send msg :" + i);
+                channel.writeAndFlush("Send msg-" + i);
+                System.out.println("Send msg-" + i);
             }
 
             //6.等待channel的close
@@ -65,6 +68,16 @@ public class UdpSender {
             buf.writeBytes(bytes);
             DatagramPacket packet = new DatagramPacket(buf, remoteAddress);
             list.add(packet);
+        }
+    }
+
+    //解码器，用来处理返回的数据
+    private static class DecoderInSender extends MessageToMessageDecoder<DatagramPacket> {
+        @Override
+        protected void decode(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket, List<Object> list) throws Exception {
+            ByteBuf buf = datagramPacket.content();
+            String msg = buf.toString(CharsetUtil.UTF_8);
+            System.out.println("Sender receive: "+ msg);
         }
     }
 }

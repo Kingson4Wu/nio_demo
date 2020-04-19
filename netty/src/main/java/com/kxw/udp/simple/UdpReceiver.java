@@ -1,4 +1,4 @@
-package com.kxw.udp;
+package com.kxw.udp.simple;
 
 import java.util.List;
 
@@ -14,7 +14,10 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.CharsetUtil;
 
-public class UdpReciever {
+/**
+ * 1.最简单的接收者和发送者
+ */
+public class UdpReceiver {
     private static int R_PORT = 2222; //Reciever的端口
     public static void main(String[] args) {
         //1.NioEventLoopGroup是执行者
@@ -33,7 +36,7 @@ public class UdpReciever {
                 }
             });
         try {
-            //4.bind到指定端口，并返回一个channel，该端口就是监听UDP报文的端口
+            //4.bind到指定端口，并返回一个channel，该端口就是监听UDP报文的端口 R_PORT =0 ,则系统自动分配端口
             Channel channel = bootstrap.bind(R_PORT).sync().channel();
             //5.等待channel的close
             channel.closeFuture().sync();
@@ -49,7 +52,10 @@ public class UdpReciever {
         protected void decode(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket, List<Object> list) throws Exception {
             ByteBuf buf = datagramPacket.content();
             String msg = buf.toString(CharsetUtil.UTF_8);
-            System.out.println("UdpReciever :"+msg);
+
+            System.out.println(
+                "client:" + datagramPacket.sender().getHostString() + ":" + datagramPacket.sender().getPort()
+                    + ", UdpReceiver :" + msg);
         }
     }
 }

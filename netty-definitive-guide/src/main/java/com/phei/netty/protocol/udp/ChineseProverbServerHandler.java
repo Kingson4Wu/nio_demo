@@ -15,6 +15,8 @@
  */
 package com.phei.netty.protocol.udp;
 
+import java.net.InetSocketAddress;
+
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,6 +47,11 @@ public class ChineseProverbServerHandler extends
 	    throws Exception {
 	String req = packet.content().toString(CharsetUtil.UTF_8);
 	System.out.println(req);
+
+	InetSocketAddress client = packet.sender();
+
+	System.out.println("client :" + client.getHostString() + ":" + client.getPort());
+
 	if ("谚语字典查询?".equals(req)) {
 	    ctx.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(
 		    "谚语查询结果: " + nextQuote(), CharsetUtil.UTF_8), packet
