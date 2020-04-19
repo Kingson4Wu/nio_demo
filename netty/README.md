@@ -6,3 +6,4 @@ Netty的并发处理能力主要体现在两个方面：
 
 <https://mp.weixin.qq.com/s?__biz=MjM5MjAwODM4MA==&mid=209275660&idx=3&sn=efa049cf2b32a8d69214f77d80a79ae4#rd>
 
+ 学习完理论和入门Demo但是仍然不会使用的，建议参考下Netty在gRPC、Vert.X和Dubbo中的应用。

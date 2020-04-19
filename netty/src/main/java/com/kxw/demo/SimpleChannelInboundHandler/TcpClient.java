@@ -65,7 +65,7 @@ public class TcpClient {
     public static void main(String[] args) throws Exception {
         try {
             long t0 = System.nanoTime();
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 10; i++) {
                 TcpClient.sendMsg(i + "你好1");
             }
             long t1 = System.nanoTime();

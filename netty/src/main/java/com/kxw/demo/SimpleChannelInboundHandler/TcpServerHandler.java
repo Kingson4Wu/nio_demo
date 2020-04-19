@@ -23,4 +23,10 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
         ctx.close();
     }
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        logger.info("channelActive......");
+        super.channelActive(ctx);
+    }
+
 }

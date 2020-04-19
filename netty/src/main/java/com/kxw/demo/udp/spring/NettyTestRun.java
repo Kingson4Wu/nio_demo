@@ -38,3 +38,19 @@ public class NettyTestRun
  后记：netty当然也可以应用在TCP和客户端的程序，具体的使用可以参考netty API文档。
  *
  */
+
+/**
+ echo "Hello World\!" | nc -4u  127.0.0.1 5000
+
+ 奇怪只能发一次。。。
+
+ lsof -i:5000
+
+ lsof -i:5000
+ COMMAND   PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+ nc      99608 kingsonwu    3u  IPv4 0xb826f29a2037b49d      0t0  UDP localhost:57394->localhost:commplex-main
+
+
+
+
+ */
