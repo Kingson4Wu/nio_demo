@@ -57,4 +57,15 @@
   
 
     
-    
+----
+###  使用技巧(唯品会)
+<pre>
+堆外内存: 网卡内核态与应用用户态之间零复制,无GC。
+1. 注意释放,避免内存泄漏 2. 避免内存复制(retain, slice, duplicate, CompositeByteBuff); 3. 避免扩容(预估大小) 4.使用基本类型的读取方式(readInt VS readByte(byte[], 0, 4)
+Netty连接: 1. NIO & Epoll(Native),Native是C++编写JNI调用的Linux Network Libs 2. 链接(Channel)多路服用,无锁链接数组
+线程: 超时控制:
+3. 异步创建链接;选择最优的链接数
+1. 选择合适的Worker Group线程数
+2. 对于阻塞的业务操作,使用业务线程池
+1. 不要使用JDK的ScheduledExecutorService, 而是使用channel.eventLoop().schedule; 2. 成功返回及时Cancel
+</pre>    
