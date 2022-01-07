@@ -1,0 +1,158 @@
+Java 中的网络 IO 模型有三种：BIO、NIO、AIO。
+
+网路 IO 中阻塞、非阻塞、异步、同步这几个术语的含义和关系：
+
+阻塞：如果线程调用 read/write 过程，但 read/write 过程没有就绪或没有完成，则调用 read/write 过程的线程会一直等待，这个过程叫做阻塞式读写。
+非阻塞：如果线程调用 read/write 过程，但 read/write 过程没有就绪或没有完成，调用 read/write 过程的线程并不会一直等待，而是去处理其他工作，等到 read/write 过程就绪或完成后再回来处理，这个过程叫做阻塞式读写。
+异步：read/write 过程托管给操作系统来完成，完成后操作系统会通知（通过回调或者事件）应用网络 IO 程序（其中的线程）来进行后续的处理。
+同步：read/write 过程由网络 IO 程序（其中的线程）来完成。
+基于以上含义，可以看出：异步 IO 一定是非阻塞 IO；同步 IO 既可以是阻塞 IO、也可以是非阻塞 IO。
+
+BIO 以流的方式处理数据，而 NIO 以缓冲区（也被叫做块）的方式处理数据，块 IO 效率比流 IO 效率高很多。BIO 基于字符流或者字节流进行操作，而 NIO 基于 Channel 和 Buffer 进行操作，数据总是从通道读取到缓冲区或者从缓冲区写入到通道。Selector 用于监听多个通道上的事件（比如收到连接请求、数据达到等等），因此使用单个线程就可以监听多个客户端通道。
+
+
+---
+
+零拷贝技术
+
+使用零拷贝技术，连内核缓冲区到 Socket 缓冲区的拷贝也省略了
+
+内核缓冲区到 Socket 缓冲区之间并没有做数据的拷贝，只是一个地址的映射。底层的网卡驱动程序要读取数据并发送到网络上的时候，看似读取的是 Socket 的缓冲区中的数据，其实直接读的是内核缓冲区中的数据。
+
+零拷贝中所谓的“零”指的是内存中数据拷贝的次数为 0。
+
+零拷贝过程使用的 Linux 系统 API 为：
+
+ssize_t sendfile(int out_fd, int in_fd, off_t *offset, size_t count);
+在 JDK 中，提供的：
+
+FileChannel.transderTo(long position, long count, WritableByteChannel target);
+
+方法实现了零拷贝过程，其中的第三个参数可以传入 SocketChannel 实例。例如客户端使用以上的零拷贝接口向服务器传输文件的代码为：
+
+```java
+public static void main(String[] args) throws IOException {
+    SocketChannel socketChannel = SocketChannel.open();
+    socketChannel.connect(new InetSocketAddress("127.0.0.1", 8080));
+    String fileName = "test.zip";
+
+    // 得到一个文件 channel
+    FileChannel fileChannel = new FileInputStream(fileName).getChannel();
+
+    // 使用零拷贝 IO 技术发送
+    long transferSize = fileChannel.transferTo(0, fileChannel.size(), socketChannel);
+    System.out.println("file transfer done, size: " + transferSize);
+    fileChannel.close();
+}
+```
+
+---
+
+几种 Reactor 线程模式
+
+BIO 服务端编程采用的是 Reactor 模式（也叫做 Dispatcher 模式，分派模式），Reactor 模式有两个要义：
+
+1）基于 IO 多路复用技术，多个连接共用一个多路复用器，应用程序的线程无需阻塞等待所有连接，只需阻塞等待多路复用器即可。当某个连接上有新数据可以处理时，应用程序的线程从阻塞状态返回，开始处理这个连接上的业务。
+
+2）基于线程池技术复用线程资源，不必为每个连接创建专用的线程，应用程序将连接上的业务处理任务分配给线程池中的线程进行处理，一个线程可以处理多个连接的业务。
+
+Reactor 模式有两个核心组成部分：
+
+1）Reactor（图中的 ServiceHandler）：Reactor 在一个单独的线程中运行，负责监听和分发事件，分发给适当的处理线程来对 IO 事件做出反应。
+
+2）Handlers（图中的 EventHandler）：处理线程执行处理方法来响应 I/O 事件，处理线程执行的是非阻塞操作。
+
+Reactor 模式就是实现网络 IO 程序高并发特性的关键。它又可以分为单 Reactor 单线程模式、单 Reactor 多线程模式、主从 Reactor 多线程模式。
+
+单 Reactor 单线程模式
+单 Reactor 单线程模式使用场景为：客户端的数量有限，业务处理非常快速，比如 Redis 在业务处理的时间复杂度为 O(1)的情况。
+
+主从 Reactor 多线程模式
+这种模式也被叫做服务器的 1+M+N 线程模式，即使用该模式开发的服务器包含一个（或多个，1 只是表示相对较少）连接建立线程+M 个 IO 线程+N 个业务处理线程。这是业界成熟的服务器程序设计模式。
+
+
+使用 Channel 构建网络 IO 程序的时候，不同的协议、不同的阻塞类型和 Netty 中不同的 Channel 对应，常用的 Channel 有：
+
+NioSocketChannel：非阻塞的 TCP 客户端 Channel（本案例的客户端使用的 Channel）
+NioServerSocketChannel：非阻塞的 TCP 服务器端 Channel（本案例的服务器端使用的 Channel）
+NioDatagramChannel：非阻塞的 UDP Channel
+NioSctpChannel：非阻塞的 SCTP 客户端 Channel
+NioSctpServerChannel：非阻塞的 SCTP 服务器端 Channel
+......
+
+数据在基于 Netty 的服务器或客户端中的处理流程是：读取数据-->解码数据-->处理数据-->编码数据-->发送数据。其中的每个过程都用得到 ChannelHandler 责任链。
+
+从方法名字可以看出，它们在不同的事件发生后被触发，例如注册 Channel 时执行 channelRegistred()、添加 ChannelHandler 时执行 handlerAdded()、收到入站数据时执行 channelRead()、入站数据读取完毕后执行 channelReadComplete()等等。
+
+ChannelHandlerContext、ChannelHandler、Channel、ChannelPipeline 这几个组件之间互相引用，互为各自的属性，你中有我、我中有你。
+
+
+在处理入站事件的时候，入站事件及数据会从 Pipeline 中的双向链表的头 ChannelHandlerContext 流向尾 ChannelHandlerContext，并依次在其中每个 ChannelInboundHandler（例如解码 Handler）中得到处理；出站事件及数据会从 Pipeline 中的双向链表的尾 ChannelHandlerContext 流向头 ChannelHandlerContext，并依次在其中每个 ChannelOutboundHandler（例如编码 Handler）中得到处理。
+
+---
+
+Netty 的 TaskQueue
+Netty 中的任务队列有三种使用场景：
+1）处理用户程序的自定义普通任务的时候
+2）处理用户程序的自定义定时任务的时候
+3）非当前 Reactor 线程调用当前 Channel 的各种方法的时候。
+
+```java
+
+ctx.channel().eventLoop().execute(new Runnable() {
+        public void run() {
+            // 借助休眠模拟耗时操作
+            try {
+                Thread.sleep(LONG_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            ByteBuf byteBuf = (ByteBuf) finalMsg;
+            System.out.println("data from client: "
+                    + byteBuf.toString(CharsetUtil.UTF_8));
+        }
+    });
+
+ctx.channel().eventLoop().schedule(new Runnable() {
+        public void run() {
+
+            ByteBuf byteBuf = (ByteBuf) finalMsg;
+            System.out.println("data from client: "
+                    + byteBuf.toString(CharsetUtil.UTF_8));
+        }
+    }, 5, TimeUnit.MINUTES);
+```
+
+---
+
+Netty 的 Future 和 Promise
+
+也可以通过 Netty Future 的 addListener()添加一个回调方法来异步处理 IO 结果
+
+```java
+// 启动客户端去连接服务器端
+// 由于 bootstrap.connect()是一个异步操作，因此用.sync()等待
+// 这个异步操作完成
+final ChannelFuture channelFuture = bootstrap.connect(
+        "127.0.0.1",
+        8080).sync();
+
+channelFuture.addListener(new ChannelFutureListener() {
+    /**
+     * 回调方法，上面的 bootstrap.connect()操作执行完之后触发
+     */
+    public void operationComplete(ChannelFuture future)
+            throws Exception {
+        if (channelFuture.isSuccess()) {
+            System.out.println("client has connected to server!");
+            // TODO 其他处理
+        } else {
+            System.out.println("connect to serverfail!");
+            // TODO 其他处理
+        }
+    }
+});
+```
+
+当 IO 操作发生异常或者完成时，通过 Promise.setSuccess()或者 Promise.setFailure()设置结果，并通知所有 Listener。
