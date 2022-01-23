@@ -15,6 +15,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         System.out.println("server received data :" + msg);
+        // msg type : UnpooledUnsafeDirectByteBuf
         ctx.write(msg);//写回数据，
     }
 

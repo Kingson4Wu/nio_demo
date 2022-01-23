@@ -54,7 +54,7 @@ TCP/IP 中,当消息接受方处理缓慢时,将会导致发送方TCP windows si
 + NIO：事件驱动I/O (Reactor模式)，AIO：事件驱动I/O (Proactor模式)??,NIO和AIO区别：NIO在有通知时可以进行相关操作，AIO有通知时表示相关操作已经完成。
 只有IOCP是asynchronous I/O，其他机制或多或少都会有一点阻塞。
 select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善
-epoll, kqueue是Reacor模式，IOCP是Proactor模式。
+epoll, kqueue是Reactor模式，IOCP是Proactor模式。
 + NIO2.0的异步套接字通道是真正的异步非阻塞I/O，它对应UNIX网络编程中的事件驱动I/O（AIO），它不需要通过多路复用器（Selector）对注册的通道进行轮询操作即可实现异步读写，从而简化了NIO的编程模型。
 + AsynchronousServerSocketChannel
 + CompletionHandler 
@@ -97,7 +97,7 @@ reference:<http://www.ibm.com/developerworks/cn/java/j-lo-io-optimize/index.html
 
 
 ### 伪异步I/O
-（官方并没有wei伪异步I/O的说法）
+（官方并没有伪异步I/O的说法）
 利用线程池和消息队列避免每次请求都创建一个线程，将消息或task放到线程池，但底层仍是BIO
 当队列积满时,后续队列操作将被阻塞，前端只有一个accept线程接收客户端接入,它被阻塞在线程池的同步阻塞队列之后,新的客户端请求消息将被拒绝,客户端会发生大量的连接超时。
 

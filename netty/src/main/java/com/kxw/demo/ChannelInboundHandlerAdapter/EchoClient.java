@@ -49,7 +49,7 @@ public class EchoClient {
                     if (future.isSuccess()) {
                         System.out.println("client connected");
                     } else {
-                        System.out.println("server attemp failed");
+                        System.out.println("server attempt failed");
                         future.cause().printStackTrace();
                     }
 
@@ -63,6 +63,6 @@ public class EchoClient {
 
     public static void main(String[] args) throws Exception {
 
-        new EchoClient("127.0.0.1", 3331).start();
+        new EchoClient("127.0.0.1", 8080).start();
     }
 }

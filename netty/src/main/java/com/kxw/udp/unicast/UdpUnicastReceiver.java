@@ -15,7 +15,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.CharsetUtil;
 
 public class UdpUnicastReceiver {
-    private static int R_PORT = 2222; //Reciever的端口
+    private static int R_PORT = 2222; //Receiver的端口
     //本地ip和端口
     private static InetSocketAddress localAddress = new InetSocketAddress("127.0.0.1", R_PORT);
     public static void main(String[] args) {

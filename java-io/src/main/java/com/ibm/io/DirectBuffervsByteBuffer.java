@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
  * 并不占用堆空间。在对普通的 ByteBuffer 访问时，系统总是会使用一个“内核缓冲区”进行间接的操作。
  * 而 DirectBuffer 所处的位置，相当于这个“内核缓冲区”。因此，使用 DirectBuffer 是一种更加接近系统底层的方法，
  * 所以，它的速度比普通的 ByteBuffer 更快。DirectBuffer 相对于 ByteBuffer 而言，读写访问速度快很多，
- * 但是创建和销毁 DirectrBuffer 的花费却比 ByteBuffer 高。
+ * 但是创建和销毁 DirectBuffer 的花费却比 ByteBuffer 高。
  */
 public class DirectBuffervsByteBuffer {
     public void DirectBufferPerform() {

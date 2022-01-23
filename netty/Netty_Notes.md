@@ -69,3 +69,47 @@ Netty连接: 1. NIO & Epoll(Native),Native是C++编写JNI调用的Linux Network 
 2. 对于阻塞的业务操作,使用业务线程池
 1. 不要使用JDK的ScheduledExecutorService, 而是使用channel.eventLoop().schedule; 2. 成功返回及时Cancel
 </pre>    
+
+---
+
+### @ChannelHandler.Sharable
++ netty @Sharable 注解详解: <https://www.cnblogs.com/FlyAway2013/p/14882319.html>
+<pre>
+有了@Sharable 就一定保证了不会出现竞争条件？ 测试证明这里 不太准确。官方的模糊说明，最为致命。WTF
+ 
+ 
+经过很多很多的测试，发现它只对自定义的 Handler在添加到pipeline的时候 有一点作用。其实很简单，两个情况：
+ 
+1 如果每次通过new 而不是共享的方式，那么加不加@Sharable 效果都是一样的。每个Channel使用不通的ChannelHandler 对象。
+如在 .childHandler(new ChannelInitializer<SocketChannel>() { 中这样写：
+pipeline().addLast(new EchoServerHandler());
+这个方式是 每次都创建一个新的实例，其实就不会检查是否Sharable ，因为肯定是 unSharable 
+ 
+2 如果通过共享的方式，也就是 Handler 实例只有一个，那么必须要加@Sharable ，表明它是可以共享的，否则 第二次建立连接的时候会报错：
+io.netty.channel.ChannelPipelineException: xxxHandler is not a @Sharable handler, so can't be added or removed multiple times.
+ 这样做的目的 大概是 以防 使用方 忘记了 实例是可以共享的， 需要他创建自定义Handler 的时候就引起注意。
+</pre>
+
+---
+
+Netty的并发处理能力主要体现在两个方面：
+
+利用Java语言自身的多线程机制实现消息的并行处理；
+利用Java NIO类库的Selector实现多路复用，一个NIO线程可以同时并发处理成百上千个通信链路，实现海量客户端的并发接入和处理。
+
+
+<https://mp.weixin.qq.com/s?__biz=MjM5MjAwODM4MA==&mid=209275660&idx=3&sn=efa049cf2b32a8d69214f77d80a79ae4#rd>
+
+学习完理论和入门Demo但是仍然不会使用的，建议参考下Netty在gRPC、Vert.X和Dubbo中的应用。
+
+---
+
+```java
+ChannelPipeline pipeline = ch.pipeline();
+                pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+                pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
+                pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
+                pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
+                pipeline.addLast(new TcpServerHandler());
+            
+```
