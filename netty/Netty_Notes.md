@@ -113,3 +113,9 @@ ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast(new TcpServerHandler());
             
 ```
+
+
+---
+
+Netty 核心源码解析:
+<https://mp.weixin.qq.com/s/F3uUqgEMxX3-sQPFHVFGow>
